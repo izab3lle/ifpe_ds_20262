@@ -1,21 +1,19 @@
+import yfinance as yf
 import plotly.express as px
-from functions.download_data import download_data
-from plotly.graph_objects import Figure
 
-def plot_history(ticker: str) -> Figure:
+def plot_price(ticker):
     """
-    Plot historical data from Yahoo Finance.
-
-    Args:
-        ticker(str): The ticker.
+    A function to plot the close price given a ticker.
     """
 
-    data = download_data(ticker)
+    data = yf.download(
+        ticker,
+        multi_level_index = False
+    )
+
     fig = px.line(
-        data_frame=data,
-        x = 'Date',
-        y = 'Close',
-        title = f'{ticker} stock price'
+        data.reset_index(),
+        x = 'Date', y = ['Close']
     )
 
     return fig
